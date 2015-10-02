@@ -39,6 +39,7 @@
     <div>
             <asp:HyperLink ID="loginFrm" runat="server" NavigateUrl="~/Login.aspx" Target="_self">Sign in/ Sign up</asp:HyperLink>
             <asp:Button ID="logout" runat="server" OnClick="logout_Click" Text="Log Out" Visible="False" />
+            <asp:HyperLink ID="addHL" runat="server" NavigateUrl="~/addItem.aspx" Target="_self" Visible="False">Add a new Item</asp:HyperLink>
     </div>
     <div style="display:block;" id="content">
         <asp:PlaceHolder runat="server" ID="contPlcHldr" />

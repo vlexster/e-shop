@@ -22,6 +22,10 @@ namespace e_shop
                 ScriptManager.RegisterStartupScript(this, GetType(), "displCont", "displCont();", true);
                 loadCont();
             }
+            if (((string)Session["role"]) == "admin")
+            {
+                addHL.Visible = true;
+            }
         }
         protected void log_checker(object sender, EventArgs e)
         {

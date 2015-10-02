@@ -66,6 +66,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="addItem.aspx" />
     <Content Include="default.aspx" />
     <Content Include="default.css" />
     <Content Include="Global.asax" />
@@ -74,6 +75,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="addItem.aspx.cs">
+      <DependentUpon>addItem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="addItem.aspx.designer.cs">
+      <DependentUpon>addItem.aspx</DependentUpon>
+    </Compile>
     <Compile Include="default.aspx.cs">
       <DependentUpon>default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
