@@ -1,0 +1,6 @@
+c:\users\vlex\documents\visual studio 2013\Projects\e-shop\e-shop\bin\e-shop.dll.config
+c:\users\vlex\documents\visual studio 2013\Projects\e-shop\e-shop\bin\e-shop.dll
+c:\users\vlex\documents\visual studio 2013\Projects\e-shop\e-shop\bin\e-shop.pdb
+c:\users\vlex\documents\visual studio 2013\Projects\e-shop\e-shop\obj\Debug\e-shop.csprojResolveAssemblyReference.cache
+c:\users\vlex\documents\visual studio 2013\Projects\e-shop\e-shop\obj\Debug\e-shop.dll
+c:\users\vlex\documents\visual studio 2013\Projects\e-shop\e-shop\obj\Debug\e-shop.pdb
