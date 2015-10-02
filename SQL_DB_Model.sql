@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.6.23, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: eshop
+-- Host: 127.0.0.1    Database: eshop2
 -- ------------------------------------------------------
 -- Server version	5.6.21
 
