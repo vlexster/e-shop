@@ -4,7 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using MySql.Data.MySqlClient;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace e_shop
 {
@@ -17,18 +18,20 @@ namespace e_shop
 
         protected void log_in_Click(object sender, EventArgs e)
         {
-            MySqlConnection dbCon = new MySqlConnection("Database=eshop;Data Source=localhost; User Id=eshop_usr; Password=WNAQWdE9GFEpXLts");
+            //SqlConnection dbCon = new SqlConnection("Database=eshop;Data Source=localhost; User Id=eshop_usr; Password=WNAQWdE9GFEpXLts");
+            SqlConnection dbCon = new SqlConnection("server=192.168.184.134; initial catalog=eshop; uid=eshop_usr; pwd=eshop_usr"); 
             dbCon.Open();
-            MySqlCommand login = dbCon.CreateCommand();
-            login.CommandText = "SELECT * FROM users WHERE uname ='" + uname.Text.ToString()+"';";
-            MySqlDataReader reader = login.ExecuteReader();
+            SqlCommand login = dbCon.CreateCommand();
+            login.CommandText = "SELECT * FROM users_new WHERE uname ='" + uname.Text.ToString()+"';";
+            SqlDataReader reader = login.ExecuteReader();
             while (reader.Read()){
-                reader.GetString(0);
-                if (pass.Text == reader["pass"].ToString()) {
+                String check_psd = reader.GetSqlValue(2).ToString();
+                String check_role = reader.GetSqlValue(3).ToString();
+                if (pass.Text == check_psd) {
                     loginStatus.Text = "Success logged in as " + uname.Text; ;
                     loginStatus.ForeColor = System.Drawing.Color.Green;
                     Session["uname"] = uname.Text;
-                    Session["role"] = reader["role"].ToString();
+                    Session["role"] = check_role;
                     Response.Redirect("./default.aspx");
                 }
                 else
@@ -44,16 +47,16 @@ namespace e_shop
         protected void reg_Click(object sender, EventArgs e)
         {
             unameTaken.Visible = false;
-            MySqlConnection dbCon = new MySqlConnection("Database=eshop;Data Source=localhost; User Id=eshop_usr; Password=WNAQWdE9GFEpXLts");
+            SqlConnection dbCon = new SqlConnection("server=192.168.184.134; initial catalog=eshop; uid=eshop_usr; pwd=eshop_usr");
             dbCon.Open();
-            MySqlCommand regPreCheck = dbCon.CreateCommand();
-            regPreCheck.CommandText = "SELECT * FROM users;";
-            MySqlDataReader reader = regPreCheck.ExecuteReader();
+            SqlCommand regPreCheck = dbCon.CreateCommand();
+            regPreCheck.CommandText = "SELECT uname FROM users_new;";
+            SqlDataReader reader = regPreCheck.ExecuteReader();
             int err = 0;
             while (reader.Read())
             {
                 reader.GetString(0);
-                if (reader["uname"].ToString()==regUname.Text.ToString())
+                if (reader.ToString()==regUname.Text.ToString())
                 {
                     err++;
                     unameTaken.Visible = true;
@@ -63,16 +66,20 @@ namespace e_shop
             reader.Close();
             if (err == 0)
             {
-                MySqlCommand reg = dbCon.CreateCommand();
-                reg.CommandText = "INSERT INTO users (uname, pass, mail, role) VALUES ('" + regUname.Text.ToString() + "','" + regPass.Text.ToString() + "','" + regMail.Text.ToString() + "', 'user');";
-                unameTaken.Text = reg.CommandText;
-                MySqlDataReader regRead = reg.ExecuteReader();
-                Session["uname"] = regUname.Text;
+                SqlCommand reg = dbCon.CreateCommand();
+                reg.CommandText = "INSERT INTO users_new (uname, passw, role) values (@uname, @pass, @role)";
+                reg.Parameters.Add("@uname", SqlDbType.VarChar);
+                reg.Parameters["@uname"].Value = uname.Text.ToString();
+                reg.Parameters.Add("@pass", SqlDbType.VarChar);
+                reg.Parameters["@pass"].Value = regPass.Text.ToString();
+                reg.Parameters.Add("@role", SqlDbType.VarChar);
+                TextBox dummy = new TextBox { Text = "user" };
+                reg.Parameters["@role"].Value = dummy.Text.ToString();
+                reg.ExecuteNonQuery();
+                Session["uname"] = regUname.Text.ToString();
                 Session["role"] = "user";
-                regRead.Close();
-                unameTaken.Text = reg.CommandText;
+
             }
-            reader.Close();
             dbCon.Close();
             if (err == 0) { Response.Redirect("./default.aspx"); }
         }

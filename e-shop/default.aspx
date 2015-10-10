@@ -26,6 +26,10 @@
         #login {
             width: 172px;
         }
+        .iImg img {
+            height: 200px;
+            width: 200px;
+        }
     </style>
     <script type="text/javascript">
             function displCont() {

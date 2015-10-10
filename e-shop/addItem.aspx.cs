@@ -4,7 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using MySql.Data.MySqlClient;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace e_shop
 {
@@ -49,12 +50,22 @@ namespace e_shop
 
         protected void Submit(object sender, EventArgs e)
         {
-            MySqlConnection dbCon = new MySqlConnection("Database=eshop;Data Source=localhost; User Id=eshop_usr; Password=WNAQWdE9GFEpXLts");
+            //SqlConnection dbCon = new SqlConnection("Database=eshop;Data Source=localhost; User Id=eshop_usr; Password=WNAQWdE9GFEpXLts");
+            SqlConnection dbCon = new SqlConnection("server=192.168.184.134; initial catalog=eshop; uid=eshop_usr; pwd=eshop_usr"); 
             dbCon.Open();
-            MySqlCommand AddItem = dbCon.CreateCommand();
-            AddItem.CommandText = "INSERT INTO items (`imgSrc`, `hlText`, `hlSrc`, `desc` ) VALUES('" + imgSrc.Text.ToString() + "','" + HLTxt.Text.ToString() + "','" + HLsrc.Text.ToString() + "','" + Desctxt.Text.ToString() + "');";
-            MySqlDataReader read = AddItem.ExecuteReader();
-            read.Close();
+            SqlCommand AddItem = dbCon.CreateCommand();
+            AddItem.CommandText = "INSERT INTO items (imgSrc, hlText, hlSrc, descr) values (@imgSrc, @hlText, @hlSrc, @desc)";
+            //SqlDataReader read = AddItem.ExecuteReader();
+            AddItem.Parameters.Add("@imgSrc", SqlDbType.VarChar);
+            AddItem.Parameters["@imgSrc"].Value = imgSrc.Text.ToString();
+            AddItem.Parameters.Add("@hlText", SqlDbType.VarChar);
+            AddItem.Parameters["@hlText"].Value = HLTxt.Text.ToString();
+            AddItem.Parameters.Add("@hlSrc", SqlDbType.VarChar);
+            AddItem.Parameters["@hlSrc"].Value = HLsrc.Text.ToString();
+            AddItem.Parameters.Add("@desc", SqlDbType.VarChar);
+            AddItem.Parameters["@desc"].Value = Desctxt.Text.ToString();
+            AddItem.ExecuteNonQuery();
+            //read.Close();
             dbCon.Close();
             Response.Redirect("./default.aspx");
         }
